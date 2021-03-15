@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="no" xml:lang="no">
 <head>
-<!-- 2021-03-15 Mon 11:19 -->
+<!-- 2021-03-15 Mon 11:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Turtle-kommandoer</title>
@@ -41,6 +41,28 @@
     /*]]>*///-->
 // @license-end
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
@@ -58,6 +80,7 @@
 <li><a href="#orgc44a0b2"><code>right()</code> | <code>rt()</code></a></li>
 <li><a href="#org5a265c6"><code>goto()</code> | <code>setpos()</code> | <code>setposition()</code></a></li>
 <li><a href="#orged9c9e0"><code>dot()</code></a></li>
+<li><a href="#org5d0654c"><code>speed()</code></a></li>
 </ul>
 </li>
 </ul>
@@ -86,7 +109,6 @@
 <p>
 Dette er en hjelpeside til <a href="turtle.html">turtle</a>-verktøyet.
 </p>
-
 
 <div id="outline-container-org27e83c3" class="outline-2">
 <h2 id="org27e83c3">Bevegelse</h2>
@@ -210,6 +232,51 @@ goto(0,0)
 <a id="dot-save">Lagre</a>
 <a id="dot-saveCanvas">Figur</a>
 <pre id="dot-output"></pre><div id="dot-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+
+<div id="outline-container-org5d0654c" class="outline-4">
+<h4 id="org5d0654c"><code>speed()</code></h4>
+<div class="outline-text-4" id="text-org5d0654c">
+<p>
+<code>speed(</code> \fart=None\ <code>)</code>
+</p>
+<dl class="org-dl">
+<dt><i>fart</i></dt><dd>et heltall i spennet 0 til 10, eller en fartsstreng</dd>
+</dl>
+
+<p>
+Sett turtlens fart til en heltallsverdi mellom 0 og 10. Fartsstrengen kobles til heltallsverdier som følger:
+</p>
+
+<ul class="org-ul">
+<li><code>"fastest"</code> : 0</li>
+<li><code>"fast"</code> : 10</li>
+<li><code>"normal"</code> : 6</li>
+<li><code>"slow"</code> : 3</li>
+<li><code>"slowest"</code> : 1</li>
+</ul>
+
+<div class="skulpt" id="speed"><textarea id="speed-code" cols="85" rows="35">
+from turtle import *
+
+speed(1)
+fd(100)
+rt(90)
+speed(4)
+fd(100)
+rt(90)
+speed(8)
+fd(100)
+rt(90)
+speed(0)
+fd(100)
+rt(90)
+</textarea>
+<a id="speed-run">Kjør</a>
+<a id="speed-save">Lagre</a>
+<a id="speed-saveCanvas">Figur</a>
+<pre id="speed-output"></pre><div id="speed-canvas" height="600" width="800"></div></div>
 </div>
 </div>
 </div>
