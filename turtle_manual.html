@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="no" xml:lang="no">
+<head>
+<!-- 2021-03-15 Mon 11:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Turtle-kommandoer</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Tarjei Bærland" />
+<link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Source Code Pro' rel='stylesheet'>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.16/svg.min.js" type="text/javascript"></script>
+<script src="js/skulpt.min.js" type="text/javascript"></script>
+<script src="js/skulpt-stdlib.js" type="text/javascript"></script>
+<script src="js/editor.js" type="text/javascript"></script>
+<script src="js/codemirror.js"></script>
+<script src="js/codemirror_python.js"></script>
+<link rel="stylesheet" href="css/codemirror.css">
+<link rel="stylesheet" href="css/stylesheet.css">
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Turtle-kommandoer</h1>
+<div id="table-of-contents">
+<h2>Innhold</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org27e83c3">Bevegelse</a>
+<ul>
+<li><a href="#org639da2d">Flytt og tegn</a>
+<ul>
+<li><a href="#org5dc48f0"><code>forward()</code> | <code>fd()</code></a></li>
+<li><a href="#org37c5267"><code>back()</code> | <code>bk()</code> | <code>backward()</code></a></li>
+<li><a href="#orgc44a0b2"><code>right()</code> | <code>rt()</code></a></li>
+<li><a href="#org5a265c6"><code>goto()</code> | <code>setpos()</code> | <code>setposition()</code></a></li>
+<li><a href="#orged9c9e0"><code>dot()</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgbd01222">Pennen</a>
+<ul>
+<li><a href="#org2f5aa19">Tegnetilstand</a>
+<ul>
+<li><a href="#orgcf4a1bb"><code>pendown()</code> | <code>pd()</code> | <code>down()</code></a></li>
+<li><a href="#org45c1b90"><code>penup()</code> | <code>pu()</code> | <code>up()</code></a></li>
+<li><a href="#orgec147cf"><code>pensize()</code> | <code>width()</code></a></li>
+<li><a href="#org025887c"><code>isdown()</code></a></li>
+</ul>
+</li>
+<li><a href="#org7b66070">Fargekontroll</a>
+<ul>
+<li><a href="#orgff9a766"><code>color()</code></a></li>
+<li><a href="#org052a791"><code>pencolor()</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+Dette er en hjelpeside til <a href="turtle.html">turtle</a>-verktøyet.
+</p>
+
+
+<div id="outline-container-org27e83c3" class="outline-2">
+<h2 id="org27e83c3">Bevegelse</h2>
+<div class="outline-text-2" id="text-org27e83c3">
+</div>
+<div id="outline-container-org639da2d" class="outline-3">
+<h3 id="org639da2d">Flytt og tegn</h3>
+<div class="outline-text-3" id="text-org639da2d">
+</div>
+<div id="outline-container-org5dc48f0" class="outline-4">
+<h4 id="org5dc48f0"><code>forward()</code> | <code>fd()</code></h4>
+<div class="outline-text-4" id="text-org5dc48f0">
+<p>
+<code>forward(</code> <i>distanse</i> <code>)</code>
+</p>
+<dl class="org-dl">
+<dt><i>distanse</i></dt><dd>hvor langt turtlen skal flytte seg framover</dd>
+</dl>
+
+<div class="skulpt" id="forward"><textarea id="forward-code" cols="85" rows="35">
+from turtle import *
+
+forward(100)
+color('red')   # kommer seinere
+fd(50)         # alias
+</textarea>
+<a id="forward-run">Kjør</a>
+<a id="forward-save">Lagre</a>
+<a id="forward-saveCanvas">Figur</a>
+<pre id="forward-output"></pre><div id="forward-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+
+<div id="outline-container-org37c5267" class="outline-4">
+<h4 id="org37c5267"><code>back()</code> | <code>bk()</code> | <code>backward()</code></h4>
+<div class="outline-text-4" id="text-org37c5267">
+<dl class="org-dl">
+<dt>distanse</dt><dd>hvor langt turtlen skal flytte seg bakover</dd>
+</dl>
+
+<div class="skulpt" id="backward"><textarea id="backward-code" cols="85" rows="35">
+from turtle import *
+
+backward(30)
+color('blue')
+back(50)
+color('red')
+bk(90)
+</textarea>
+<a id="backward-run">Kjør</a>
+<a id="backward-save">Lagre</a>
+<a id="backward-saveCanvas">Figur</a>
+<pre id="backward-output"></pre><div id="backward-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+
+<div id="outline-container-orgc44a0b2" class="outline-4">
+<h4 id="orgc44a0b2"><code>right()</code> | <code>rt()</code></h4>
+<div class="outline-text-4" id="text-orgc44a0b2">
+<dl class="org-dl">
+<dt>vinkel</dt><dd>hvor mange grader turtlen skal rotere mot <i>høyre</i></dd>
+</dl>
+
+<div class="skulpt" id="right"><textarea id="right-code" cols="85" rows="35">
+from turtle import *
+
+fd(30)
+right(45)
+fd(50)
+rt(30)
+fd(40)
+</textarea>
+<a id="right-run">Kjør</a>
+<a id="right-save">Lagre</a>
+<a id="right-saveCanvas">Figur</a>
+<pre id="right-output"></pre><div id="right-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+
+<div id="outline-container-org5a265c6" class="outline-4">
+<h4 id="org5a265c6"><code>goto()</code> | <code>setpos()</code> | <code>setposition()</code></h4>
+<div class="outline-text-4" id="text-org5a265c6">
+<dl class="org-dl">
+<dt><code>x</code></dt><dd>et tall eller tallpar</dd>
+<dt><code>y</code></dt><dd>et tall eller ingenting (hvis «tallpar» for x)</dd>
+</dl>
+<div class="skulpt" id="goto"><textarea id="goto-code" cols="85" rows="35">
+from turtle import *
+
+setpos(80, 80)   # gå til koordinatene x = 80 og y = 80
+goto((100, -10)) # gå til koordinatparet (100, -10)
+setposition(0, 0)
+</textarea>
+<a id="goto-run">Kjør</a>
+<a id="goto-save">Lagre</a>
+<a id="goto-saveCanvas">Figur</a>
+<pre id="goto-output"></pre><div id="goto-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+
+<div id="outline-container-orged9c9e0" class="outline-4">
+<h4 id="orged9c9e0"><code>dot()</code></h4>
+<div class="outline-text-4" id="text-orged9c9e0">
+<p>
+<code>dot(</code> <i>størrelse=None, *farge</i> <code>)</code>
+</p>
+<dl class="org-dl">
+<dt><i>størrelse</i></dt><dd>et heltall ≥ 1 (hvis gitt)</dd>
+<dt><i>farge</i></dt><dd>en fargestreng (f.eks. <code>"red"</code> ) eller numerisk fargetrippel (f.eks. <code>(0.2, 0.4, 0.55)</code> )</dd>
+</dl>
+<div class="skulpt" id="dot"><textarea id="dot-code" cols="85" rows="35">
+from turtle import *
+
+dot(10, "red")
+penup()        # kommer seinere
+goto(90, 90)
+dot()          # legg merke til at det kommer prikk også med 'penup()'
+goto(0,0)
+</textarea>
+<a id="dot-run">Kjør</a>
+<a id="dot-save">Lagre</a>
+<a id="dot-saveCanvas">Figur</a>
+<pre id="dot-output"></pre><div id="dot-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbd01222" class="outline-2">
+<h2 id="orgbd01222">Pennen</h2>
+<div class="outline-text-2" id="text-orgbd01222">
+</div>
+<div id="outline-container-org2f5aa19" class="outline-3">
+<h3 id="org2f5aa19">Tegnetilstand</h3>
+<div class="outline-text-3" id="text-org2f5aa19">
+</div>
+<div id="outline-container-orgcf4a1bb" class="outline-4">
+<h4 id="orgcf4a1bb"><code>pendown()</code> | <code>pd()</code> | <code>down()</code></h4>
+<div class="outline-text-4" id="text-orgcf4a1bb">
+<p>
+Sett pennen ned, slik at turtlen tegner om den beveger seg.
+</p>
+
+<div class="skulpt" id="pendown"><textarea id="pendown-code" cols="85" rows="35">
+from turtle import *
+penup()   # løfter pennen
+goto(100, 100)
+dot()
+goto(30, 30)
+pendown()
+fd(90)
+</textarea>
+<a id="pendown-run">Kjør</a>
+<a id="pendown-save">Lagre</a>
+<a id="pendown-saveCanvas">Figur</a>
+<pre id="pendown-output"></pre><div id="pendown-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+
+<div id="outline-container-org45c1b90" class="outline-4">
+<h4 id="org45c1b90"><code>penup()</code> | <code>pu()</code> | <code>up()</code></h4>
+<div class="outline-text-4" id="text-org45c1b90">
+<p>
+Sett pennen ned, slik at turtlen tegner om den beveger seg.
+</p>
+
+<div class="skulpt" id="penup"><textarea id="penup-code" cols="85" rows="35">
+from turtle import *
+goto(100, 100)
+dot()
+goto(30, 30)
+penup()   # løfter pennen
+fd(90)
+</textarea>
+<a id="penup-run">Kjør</a>
+<a id="penup-save">Lagre</a>
+<a id="penup-saveCanvas">Figur</a>
+<pre id="penup-output"></pre><div id="penup-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+
+<div id="outline-container-orgec147cf" class="outline-4">
+<h4 id="orgec147cf"><code>pensize()</code> | <code>width()</code></h4>
+<div class="outline-text-4" id="text-orgec147cf">
+<p>
+<code>pensize(</code> <i>bredde=None</i> <code>)</code>
+</p>
+<dl class="org-dl">
+<dt><i>bredde</i></dt><dd>et positivt heltall.</dd>
+</dl>
+
+<p>
+Setter bredden til pennen til <i>bredde</i>. Hvis <i>bredde</i> ikke er gitt, returnerer funksjonen nåværende tykkelse.
+</p>
+
+<div class="skulpt" id="pensize"><textarea id="pensize-code" cols="85" rows="35">
+from turtle import *
+
+forward(50)
+print(pensize())
+pensize(5)
+forward(50)
+</textarea>
+<a id="pensize-run">Kjør</a>
+<a id="pensize-save">Lagre</a>
+<a id="pensize-saveCanvas">Figur</a>
+<pre id="pensize-output"></pre><div id="pensize-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+
+<div id="outline-container-org025887c" class="outline-4">
+<h4 id="org025887c"><code>isdown()</code></h4>
+<div class="outline-text-4" id="text-org025887c">
+<p>
+Returnerer <code>True</code> hvis pennen er nede, <code>False</code> hvis den er oppe.
+</p>
+<div class="skulpt" id="isdown"><textarea id="isdown-code" cols="85" rows="35">
+from turtle import *
+
+penup()
+fd(30)
+if isdown() == False:
+    dot()
+pendown()
+fd(50)
+if isdown() == False:
+    dot()
+penup()
+fd(30)
+</textarea>
+<a id="isdown-run">Kjør</a>
+<a id="isdown-save">Lagre</a>
+<a id="isdown-saveCanvas">Figur</a>
+<pre id="isdown-output"></pre><div id="isdown-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+</div>
+<div id="outline-container-org7b66070" class="outline-3">
+<h3 id="org7b66070">Fargekontroll</h3>
+<div class="outline-text-3" id="text-org7b66070">
+</div>
+<div id="outline-container-orgff9a766" class="outline-4">
+<h4 id="orgff9a766"><code>color()</code></h4>
+<div class="outline-text-4" id="text-orgff9a766">
+<p>
+<code>color(</code> <i>*args</i> <code>)</code>
+</p>
+
+<p>
+Returner eller sett penn- og fyllfarge.
+</p>
+
+<p>
+Denne tar alt fra 0 til 3 argumenter, som følger:
+</p>
+<dl class="org-dl">
+<dt><code>color()</code></dt><dd>Returner penn- og fyllfarge som et par av spesifikasjonsstrenger eller fargetupler.</dd>
+<dt><code>color(fargestreng)</code>, <code>color((r, g, b))</code>, <code>color(r, g, b)</code></dt><dd>Setter både penn- og fyllfarge etter tilsvarende format som <a href="#org052a791"><code>pencolor()</code></a>.</dd>
+<dt><code>color(fargestreng1, fargestreng2)</code>, <code>color((r1, g1, b1), (r2, g2, b2))</code></dt><dd>Tilsvarende <code>pencolor(fargestreng1)</code> og <code>fillcolor(fargestreng2)</code>.</dd>
+</dl>
+
+<p>
+For <code>fargestreng</code>-verdier, finner du mulige navn <a href="https://www.tcl.tk/man/tcl8.4/TkCmd/colors.htm">her</a>.
+</p>
+
+<div class="skulpt" id="color"><textarea id="color-code" cols="85" rows="35">
+from turtle import *
+
+print(color())
+fd(80)
+color("deep pink")
+fd(80)
+</textarea>
+<a id="color-run">Kjør</a>
+<a id="color-save">Lagre</a>
+<a id="color-saveCanvas">Figur</a>
+<pre id="color-output"></pre><div id="color-canvas" height="600" width="800"></div></div>
+</div>
+</div>
+<div id="outline-container-org052a791" class="outline-4">
+<h4 id="org052a791"><code>pencolor()</code></h4>
+<div class="outline-text-4" id="text-org052a791">
+<p>
+Pennfarge&#x2026;
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

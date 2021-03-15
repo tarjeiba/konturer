@@ -130,18 +130,18 @@ p.small, #postamble {
     margin-bottom: 10pt;
 }
 
-dt {
-    float: left;
-    clear: left;
-    width: 30px;
-    font-weight: bold;
-    vertical-align: middle;
-}
+/* dt { */
+/*     float: left; */
+/*     clear: left; */
+/*     /\* width: 30px; *\/ */
+/*     font-weight: bold; */
+/*     vertical-align: middle; */
+/* } */
 
-dd {
-    margin: 0 0 0 50px;
-    padding: 0 0 0.3em 0;
-}
+/* dd { */
+/*     margin: 0 0 0 50px; */
+/*     padding: 0 0 0.3em 0; */
+/* } */
 
 table {
     border-collapse: collapse;
@@ -157,8 +157,8 @@ table {
 
 
 #table-of-contents {
-    width: 15em;
-    float: left;
+    /* width: 15em; */
+    /* float: left; */
     overflow: auto;
 }
 

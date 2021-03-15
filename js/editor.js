@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function(){
       styleSelectedText: false,
       showCursorWhenSelecting: true,
       lineWrapping: true,
+      indentUnit: 4,
       extraKeys: keymap,
     });
 
