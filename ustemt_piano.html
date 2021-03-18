@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="no" xml:lang="no">
+<head>
+<!-- 2021-03-18 Thu 15:53 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ustemt piano</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Tarjei Bærland" />
+<link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Source Code Pro' rel='stylesheet'>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.16/svg.min.js" type="text/javascript"></script>
+<script src="js/skulpt.min.js" type="text/javascript"></script>
+<script src="js/skulpt-stdlib.js" type="text/javascript"></script>
+<script src="js/editor.js" type="text/javascript"></script>
+<script src="js/codemirror.js"></script>
+<script src="js/codemirror_python.js"></script>
+<link rel="stylesheet" href="css/codemirror.css">
+<link rel="stylesheet" href="css/stylesheet.css">
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Ustemt piano</h1>
+<style>
+.container {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 660px;
+  height: 110px;
+  white-space: nowrap;
+  margin: 10px;
+}
+
+.keyboard {
+  width: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.key {
+  cursor: pointer;
+  font: 16px "Open Sans", "Lucida Grande", "Arial", sans-serif;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 20px;
+  height: 80px;
+  text-align: center;
+  box-shadow: 2px 2px darkgray;
+  display: inline-block;
+  position: relative;
+  margin-right: 3px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.key div {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.key div sub {
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.key:hover {
+  background-color: #eef;
+}
+
+.key:active {
+  background-color: #000;
+  color: #fff;
+}
+
+.octave {
+  display: inline-block;
+  padding: 0 6px 0 0;
+}
+
+.settingsBar {
+  padding-top: 8px;
+  font: 14px "Open Sans", "Lucida Grande", "Arial", sans-serif;
+  position: relative;
+  vertical-align: middle;
+  width: 100%;
+  height: 30px;
+}
+
+.left {
+  width: 50%;
+  position: absolute;
+  left: 0;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.left span, .left input {
+  vertical-align: middle;
+}
+
+.right {
+  width: 50%;
+  position: absolute;
+  right: 0;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.right span {
+  vertical-align: middle;
+}
+
+.right input {
+  vertical-align: baseline;
+}
+</style>
+
+<div class="container">
+  <div class="keyboard"></div>
+</div>
+
+<div class="settingsBar">
+  <div class="left">
+    <span>Volume: </span>
+    <input type="range" min="0.0" max="1.0" step="0.01"
+        value="0.5" list="volumes" name="volume">
+    <datalist id="volumes">
+      <option value="0.0" label="Mute">
+      <option value="1.0" label="100%">
+    </datalist>
+  </div>
+
+
+  <div class="right">
+    <span>Current waveform: </span>
+    <select name="waveform">
+      <option value="sine">Sine</option>
+      <option value="square" selected>Square</option>
+      <option value="sawtooth">Sawtooth</option>
+      <option value="triangle">Triangle</option>
+      <option value="custom">Custom</option>
+    </select>
+  </div>
+</div>
+
+<script src="js/ustemt_piano.js"></script>
+
+
+<div class="org-src-container">
+<pre class="src src-js"><span class="org-comment-delimiter">// </span><span class="org-comment">Test</span>
+
+<span class="org-keyword">let</span> <span class="org-variable-name">audioContext</span> = <span class="org-keyword">new</span> (window.AudioContext || window.webkitAudioContext)();
+<span class="org-keyword">let</span> <span class="org-variable-name">oscList</span> = [];
+<span class="org-keyword">let</span> <span class="org-variable-name">masterGainNode</span> = <span class="org-constant">null</span>;
+
+<span class="org-keyword">let</span> <span class="org-variable-name">keyboard</span> = document.querySelector(<span class="org-string">".keyboard"</span>);
+<span class="org-keyword">let</span> <span class="org-variable-name">wavePicker</span> = document.querySelector(<span class="org-string">"select[name='waveform']"</span>);
+<span class="org-keyword">let</span> <span class="org-variable-name">volumeControl</span> = document.querySelector(<span class="org-string">"input[name='volume']"</span>);
+
+<span class="org-keyword">let</span> <span class="org-variable-name">noteFreq</span> = <span class="org-constant">null</span>;
+<span class="org-keyword">let</span> <span class="org-variable-name">customWaveForm</span> = <span class="org-constant">null</span>;
+<span class="org-keyword">let</span> <span class="org-variable-name">sineTerms</span> = <span class="org-constant">null</span>;
+<span class="org-keyword">let</span> <span class="org-variable-name">cosineTerms</span> = <span class="org-constant">null</span>;
+
+<span class="org-keyword">function</span> <span class="org-function-name">createNoteTable</span>() {
+  <span class="org-keyword">let</span> <span class="org-variable-name">noteFreq</span> = [];
+  <span class="org-keyword">for</span> (<span class="org-keyword">let</span> <span class="org-variable-name">i</span>=0; i &lt; 9; i++) {
+    noteFreq[i] = [];
+  }
+
+  noteFreq[0][<span class="org-string">"A"</span>] = 27.500000000000000;
+  noteFreq[0][<span class="org-string">"A#"</span>] = 29.135235094880619;
+  noteFreq[0][<span class="org-string">"B"</span>] = 30.867706328507756;
+
+  noteFreq[1][<span class="org-string">"C"</span>] = 32.703195662574829;
+  noteFreq[1][<span class="org-string">"C#"</span>] = 34.647828872109012;
+  noteFreq[1][<span class="org-string">"D"</span>] = 36.708095989675945;
+  noteFreq[1][<span class="org-string">"D#"</span>] = 38.890872965260113;
+  noteFreq[1][<span class="org-string">"E"</span>] = 41.203444614108741;
+  noteFreq[1][<span class="org-string">"F"</span>] = 43.653528929125485;
+  noteFreq[1][<span class="org-string">"F#"</span>] = 46.249302838954299;
+  noteFreq[1][<span class="org-string">"G"</span>] = 48.999429497718661;
+  noteFreq[1][<span class="org-string">"G#"</span>] = 51.913087197493142;
+  noteFreq[1][<span class="org-string">"A"</span>] = 55.000000000000000;
+  noteFreq[1][<span class="org-string">"A#"</span>] = 58.270470189761239;
+  noteFreq[1][<span class="org-string">"B"</span>] = 61.735412657015513;
+
+
+  noteFreq[2][<span class="org-string">"C"</span>] = 65.406391325149658;
+  noteFreq[2][<span class="org-string">"C#"</span>] = 69.295657744218024;
+  noteFreq[2][<span class="org-string">"D"</span>] = 73.416191979351890;
+  noteFreq[2][<span class="org-string">"D#"</span>] = 77.781745930520227;
+  noteFreq[2][<span class="org-string">"E"</span>] = 82.406889228217482;
+  noteFreq[2][<span class="org-string">"F"</span>] = 87.307057858250971;
+  noteFreq[2][<span class="org-string">"F#"</span>] = 92.498605677908599;
+  noteFreq[2][<span class="org-string">"G"</span>] = 97.998858995437323;
+  noteFreq[2][<span class="org-string">"G#"</span>] = 103.826174394986284;
+  noteFreq[2][<span class="org-string">"A"</span>] = 110.000000000000000;
+  noteFreq[2][<span class="org-string">"A#"</span>] = 116.540940379522479;
+  noteFreq[2][<span class="org-string">"B"</span>] = 123.470825314031027;
+
+  noteFreq[3][<span class="org-string">"C"</span>] = 130.812782650299317;
+  noteFreq[3][<span class="org-string">"C#"</span>] = 138.591315488436048;
+  noteFreq[3][<span class="org-string">"D"</span>] = 146.832383958703780;
+  noteFreq[3][<span class="org-string">"D#"</span>] = 155.563491861040455;
+  noteFreq[3][<span class="org-string">"E"</span>] = 164.813778456434964;
+  noteFreq[3][<span class="org-string">"F"</span>] = 174.614115716501942;
+  noteFreq[3][<span class="org-string">"F#"</span>] = 184.997211355817199;
+  noteFreq[3][<span class="org-string">"G"</span>] = 195.997717990874647;
+  noteFreq[3][<span class="org-string">"G#"</span>] = 207.652348789972569;
+  noteFreq[3][<span class="org-string">"A"</span>] = 220.000000000000000;
+  noteFreq[3][<span class="org-string">"A#"</span>] = 233.081880759044958;
+  noteFreq[3][<span class="org-string">"B"</span>] = 246.941650628062055;
+
+  noteFreq[4][<span class="org-string">"C"</span>] = 261.625565300598634;
+  noteFreq[4][<span class="org-string">"C#"</span>] = 277.182630976872096;
+  noteFreq[4][<span class="org-string">"D"</span>] = 293.664767917407560;
+  noteFreq[4][<span class="org-string">"D#"</span>] = 311.126983722080910;
+  noteFreq[4][<span class="org-string">"E"</span>] = 329.627556912869929;
+  noteFreq[4][<span class="org-string">"F"</span>] = 349.228231433003884;
+  noteFreq[4][<span class="org-string">"F#"</span>] = 369.994422711634398;
+  noteFreq[4][<span class="org-string">"G"</span>] = 391.995435981749294;
+  noteFreq[4][<span class="org-string">"G#"</span>] = 415.304697579945138;
+  noteFreq[4][<span class="org-string">"A"</span>] = 440.000000000000000;
+  noteFreq[4][<span class="org-string">"A#"</span>] = 466.163761518089916;
+  noteFreq[4][<span class="org-string">"B"</span>] = 493.883301256124111;
+
+  noteFreq[5][<span class="org-string">"C"</span>] = 523.251130601197269;
+  noteFreq[5][<span class="org-string">"C#"</span>] = 554.365261953744192;
+  noteFreq[5][<span class="org-string">"D"</span>] = 587.329535834815120;
+  noteFreq[5][<span class="org-string">"D#"</span>] = 622.253967444161821;
+  noteFreq[5][<span class="org-string">"E"</span>] = 659.255113825739859;
+  noteFreq[5][<span class="org-string">"F"</span>] = 698.456462866007768;
+  noteFreq[5][<span class="org-string">"F#"</span>] = 739.988845423268797;
+  noteFreq[5][<span class="org-string">"G"</span>] = 783.990871963498588;
+  noteFreq[5][<span class="org-string">"G#"</span>] = 830.609395159890277;
+  noteFreq[5][<span class="org-string">"A"</span>] = 880.000000000000000;
+  noteFreq[5][<span class="org-string">"A#"</span>] = 932.327523036179832;
+  noteFreq[5][<span class="org-string">"B"</span>] = 987.766602512248223;
+
+  noteFreq[6][<span class="org-string">"C"</span>] = 1046.502261202394538;
+  noteFreq[6][<span class="org-string">"C#"</span>] = 1108.730523907488384;
+  noteFreq[6][<span class="org-string">"D"</span>] = 1174.659071669630241;
+  noteFreq[6][<span class="org-string">"D#"</span>] = 1244.507934888323642;
+  noteFreq[6][<span class="org-string">"E"</span>] = 1318.510227651479718;
+  noteFreq[6][<span class="org-string">"F"</span>] = 1396.912925732015537;
+  noteFreq[6][<span class="org-string">"F#"</span>] = 1479.977690846537595;
+  noteFreq[6][<span class="org-string">"G"</span>] = 1567.981743926997176;
+  noteFreq[6][<span class="org-string">"G#"</span>] = 1661.218790319780554;
+  noteFreq[6][<span class="org-string">"A"</span>] = 1760.000000000000000;
+  noteFreq[6][<span class="org-string">"A#"</span>] = 1864.655046072359665;
+  noteFreq[6][<span class="org-string">"B"</span>] = 1975.533205024496447;
+
+  noteFreq[7][<span class="org-string">"C"</span>] = 2093.004522404789077;
+  noteFreq[7][<span class="org-string">"C#"</span>] = 2217.461047814976769;
+  noteFreq[7][<span class="org-string">"D"</span>] = 2349.318143339260482;
+  noteFreq[7][<span class="org-string">"D#"</span>] = 2489.015869776647285;
+  noteFreq[7][<span class="org-string">"E"</span>] = 2637.020455302959437;
+  noteFreq[7][<span class="org-string">"F"</span>] = 2793.825851464031075;
+  noteFreq[7][<span class="org-string">"F#"</span>] = 2959.955381693075191;
+  noteFreq[7][<span class="org-string">"G"</span>] = 3135.963487853994352;
+  noteFreq[7][<span class="org-string">"G#"</span>] = 3322.437580639561108;
+  noteFreq[7][<span class="org-string">"A"</span>] = 3520.000000000000000;
+  noteFreq[7][<span class="org-string">"A#"</span>] = 3729.310092144719331;
+  noteFreq[7][<span class="org-string">"B"</span>] = 3951.066410048992894;
+
+  noteFreq[8][<span class="org-string">"C"</span>] = 4186.009044809578154;
+
+  <span class="org-keyword">return</span> noteFreq;
+}
+
+<span class="org-keyword">function</span> <span class="org-function-name">setup</span>() {
+  noteFreq = createNoteTable();
+  
+  volumeControl.addEventListener(<span class="org-string">"change"</span>, changeVolume, <span class="org-constant">false</span>);
+
+  masterGainNode = audioContext.createGain();
+  masterGainNode.connect(audioContext.destination);
+  masterGainNode.gain.value = volumeControl.value;
+
+  noteFreq.forEach(<span class="org-keyword">function</span>(<span class="org-variable-name">keys</span>, <span class="org-variable-name">idx</span>) {
+    <span class="org-keyword">let</span> <span class="org-variable-name">keyList</span> = Object.entries(keys);
+    <span class="org-keyword">let</span> <span class="org-variable-name">octaveElem</span> = document.createElement(<span class="org-string">"div"</span>);
+    octaveElem.className = <span class="org-string">"octave"</span>;
+
+    keyList.forEach(<span class="org-keyword">function</span>(<span class="org-variable-name">key</span>) {
+      <span class="org-keyword">if</span> (key[0].length == 1) {
+        octaveElem.appendChild(createKey(key[0], idx, key[1]));
+      }
+    });
+
+    keyboard.appendChild(octaveElem);
+  });
+
+  document.querySelector(<span class="org-string">"div[data-note='B'][data-octave='5']"</span>).scrollIntoView(<span class="org-constant">false</span>);
+
+  sineTerms = <span class="org-keyword">new</span> <span class="org-type">Float32Array</span>([0, 0, 1, 0, 1]);
+  cosineTerms = <span class="org-keyword">new</span> <span class="org-type">Float32Array</span>(sineTerms.length);
+  customWaveform = audioContext.createPeriodicWave(cosineTerms, sineTerms);
+
+  <span class="org-keyword">for</span> (i=0; i&lt;9; i++) {
+    oscList[i] = {};
+  }
+}
+
+setup();
+
+<span class="org-keyword">function</span> <span class="org-function-name">createKey</span>(<span class="org-variable-name">note</span>, <span class="org-variable-name">octave</span>, <span class="org-variable-name">freq</span>) {
+  <span class="org-keyword">let</span> <span class="org-variable-name">keyElement</span> = document.createElement(<span class="org-string">"div"</span>);
+  <span class="org-keyword">let</span> <span class="org-variable-name">labelElement</span> = document.createElement(<span class="org-string">"div"</span>);
+
+  keyElement.className = <span class="org-string">"key"</span>;
+  keyElement.dataset[<span class="org-string">"octave"</span>] = octave;
+  keyElement.dataset[<span class="org-string">"note"</span>] = note;
+  keyElement.dataset[<span class="org-string">"frequency"</span>] = freq;
+
+  labelElement.innerHTML = note + <span class="org-string">"&lt;sub&gt;"</span> + octave + <span class="org-string">"&lt;/sub&gt;"</span>;
+  keyElement.appendChild(labelElement);
+
+  keyElement.addEventListener(<span class="org-string">"mousedown"</span>, notePressed, <span class="org-constant">false</span>);
+  keyElement.addEventListener(<span class="org-string">"mouseup"</span>, noteReleased, <span class="org-constant">false</span>);
+  keyElement.addEventListener(<span class="org-string">"mouseover"</span>, notePressed, <span class="org-constant">false</span>);
+  keyElement.addEventListener(<span class="org-string">"mouseleave"</span>, noteReleased, <span class="org-constant">false</span>);
+
+  <span class="org-keyword">return</span> keyElement;
+}
+
+<span class="org-keyword">function</span> <span class="org-function-name">playTone</span>(<span class="org-variable-name">freq</span>) {
+  <span class="org-keyword">let</span> <span class="org-variable-name">osc</span> = audioContext.createOscillator();
+  osc.connect(masterGainNode);
+
+  <span class="org-keyword">let</span> <span class="org-variable-name">type</span> = wavePicker.options[wavePicker.selectedIndex].value;
+
+  <span class="org-keyword">if</span> (type == <span class="org-string">"custom"</span>) {
+    osc.setPeriodicWave(customWaveForm);
+  } <span class="org-keyword">else</span> {
+    osc.type = type;
+  }
+
+  osc.frequency.value = freq;
+  osc.start();
+
+  <span class="org-keyword">return</span> osc;
+}
+
+<span class="org-keyword">function</span> <span class="org-function-name">notePressed</span>(<span class="org-variable-name">event</span>) {
+  <span class="org-keyword">if</span> (event.buttons &amp; 1) {
+    <span class="org-keyword">let</span> <span class="org-variable-name">dataset</span> = event.target.dataset;
+
+    <span class="org-keyword">if</span> (!dataset[<span class="org-string">"pressed"</span>]) {
+      <span class="org-keyword">let</span> <span class="org-variable-name">octave</span> = +dataset[<span class="org-string">"octave"</span>];
+      oscList[octave][dataset[<span class="org-string">"note"</span>]] = playTone(dataset[<span class="org-string">"frequency"</span>]);
+      dataset[<span class="org-string">"pressed"</span>] = <span class="org-string">"yes"</span>;
+    }
+  }
+}
+
+<span class="org-keyword">function</span> <span class="org-function-name">noteReleased</span>(<span class="org-variable-name">event</span>) {
+  <span class="org-keyword">let</span> <span class="org-variable-name">dataset</span> = event.target.dataset;
+
+  <span class="org-keyword">if</span> (dataset &amp;&amp; dataset[<span class="org-string">"pressed"</span>]) {
+    <span class="org-keyword">let</span> <span class="org-variable-name">octave</span> = +dataset[<span class="org-string">"octave"</span>];
+    oscList[octave][dataset[<span class="org-string">"note"</span>]].stop();
+    <span class="org-keyword">delete</span> oscList[octave][dataset[<span class="org-string">"note"</span>]];
+    <span class="org-keyword">delete</span> dataset[<span class="org-string">"pressed"</span>]
+  }
+}
+
+<span class="org-keyword">function</span> <span class="org-function-name">changeVolume</span>(<span class="org-variable-name">event</span>) {
+  masterGainNode.gain.value = volumeControl.value;
+}
+</pre>
+</div>
+
+
+Du kan laste ned javascript-filen <a href="js/ustemt_piano.js">her</a>.
+</div>
+</body>
+</html>
