@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="no" xml:lang="no">
+<head>
+<!-- 2021-03-24 Wed 12:04 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smittespredningsmodellering</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Tarjei Bærland" />
+<link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Source Code Pro' rel='stylesheet'>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.16/svg.min.js" type="text/javascript"></script>
+<script src="js/skulpt.min.js" type="text/javascript"></script>
+<script src="js/skulpt-stdlib.js" type="text/javascript"></script>
+<script src="js/editor.js" type="text/javascript"></script>
+<script src="js/codemirror.js"></script>
+<script src="js/codemirror_python.js"></script>
+<link rel="stylesheet" href="css/codemirror.css">
+<link rel="stylesheet" href="css/stylesheet.css">
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Smittespredningsmodellering</h1>
+
+<div id="outline-container-org49cefb3" class="outline-2">
+<h2 id="org49cefb3">Bakgrunn</h2>
+<div class="outline-text-2" id="text-org49cefb3">
+<p>
+Vi skal se nærmere på SIR-modellen for smittespredning. I denne modellen deler vi en befolkning inn i tre grupper, de som er mottakelige for en sykdom (S for «susceptible»), de som er infisert av en sykdom (I for «infected») og de «har kommet seg», eller restituert, fra en sykdomen (R for «recovered»).
+</p>
+
+<p>
+<figure>
+<img src="svg/befolkningsgrupper.svg"/></figure>
+</p>
+
+<p>
+Vi ser også at en person i gruppen S kun kan gå til I, før hen går til R.
+</p>
+
+<p>
+Om vi starter med en befolkning hvor alle bortsett fra én er i S, er det to ting som kan skje:
+</p>
+<ol class="org-ol">
+<li>Den ene smittede kan smitte en eller flere fra S, eller</li>
+<li>den ene smittede kan bli restituert før hen rekker å smitte noen fra S.</li>
+</ol>
+
+<p>
+<figure>
+<img src="svg/smitteutvikling.svg"/></figure>
+</p>
+
+<p>
+Det virker naturlig at dersom vi ser på en sykdom som smitter sjelden og har kort restitusjonstid (hvor lenge en person er i I), øker dette sannsynligheten for å havne i scenario, og vice versa.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7d925a6" class="outline-2">
+<h2 id="org7d925a6">Matematisk modell</h2>
+<div class="outline-text-2" id="text-org7d925a6">
+<p>
+Vi kan sette opp en SIR-modell som et sett med differensiallikninger, hvor hver likning beskriver endringen til en av gruppestørrelsene. Vi får da en likning for \(S'(t)\), en for \(I'(t)\) og en for \(R'(t)\).
+</p>
+
+<p>
+Vi får da et likningssett gitt som
+</p>
+\begin{align*}
+S'(t) &= -\beta S I \\
+I'(t) &= \beta S I - \gamma I \\
+R'(t) &= \gamma I,
+\end{align*}
+<p>
+hvor \(\beta\) og \(\gamma\) er to <i>positive</i> konstanter.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8e5d2a5" class="outline-2">
+<h2 id="org8e5d2a5">Geogebra</h2>
+<div class="outline-text-2" id="text-org8e5d2a5">
+<p>
+Du finner en løsning av disse likningene i Geogebra <a href="https://www.geogebra.org/m/jng5etuf">her</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1eb93ae" class="outline-2">
+<h2 id="org1eb93ae">Programmering</h2>
+<div class="outline-text-2" id="text-org1eb93ae">
+<p>
+==:
+</p>
+<div class="org-src-container">
+<pre class="src src-jupyter-python"><span class="org-keyword">import</span> matplotlib.pyplot <span class="org-keyword">as</span> plt
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Grensebetingelser, eller initialbetingelser</span>
+<span class="org-variable-name">S</span>  = [1.0]      <span class="org-comment-delimiter"># </span><span class="org-comment">i praksis alle er mottakelige i starten</span>
+<span class="org-variable-name">I</span>  = [1e-6]     <span class="org-comment-delimiter"># </span><span class="org-comment">andel smittede i starten  (1e-6 = 1*10^-6)</span>
+<span class="org-variable-name">R</span>  = [0]        <span class="org-comment-delimiter"># </span><span class="org-comment">ingen er restituert i starten</span>
+<span class="org-variable-name">ts</span> = [0]        <span class="org-comment-delimiter"># </span><span class="org-comment">f&#248;rste tidspunkt</span>
+
+<span class="org-variable-name">t</span> = 0
+<span class="org-variable-name">delta_t</span> = 0.1  <span class="org-comment-delimiter"># </span><span class="org-comment">hvor langt framover skal vi g&#229; hvert skritt</span>
+<span class="org-variable-name">t_max</span>   = 100  <span class="org-comment-delimiter"># </span><span class="org-comment">hvor langt skal vi regne?</span>
+
+<span class="org-variable-name">beta</span> = 1      <span class="org-comment-delimiter"># </span><span class="org-comment">hvor mange m&#248;tes per tid?</span>
+<span class="org-variable-name">gamma</span> = 0.05  <span class="org-comment-delimiter"># </span><span class="org-comment">1 / antall dager du er sjuk</span>
+
+<span class="org-comment-delimiter"># </span><span class="org-comment">Vi l&#248;ser difflikningene ved &#229; bruke "framover-euler"</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">aka. "Eulers metode"</span>
+
+<span class="org-keyword">while</span> t &lt; t_max:
+    <span class="org-variable-name">t</span> += delta_t
+
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Forrige verdier</span>
+    <span class="org-variable-name">forrige_S</span> = S[-1]   <span class="org-comment-delimiter"># </span><span class="org-comment">siste verdi i lista</span>
+    <span class="org-variable-name">forrige_I</span> = I[-1]
+    <span class="org-variable-name">forrige_R</span> = R[-1]
+
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Dette er den faktiske modellen</span>
+    <span class="org-variable-name">dSdt</span> = -beta * forrige_I * forrige_S
+    <span class="org-variable-name">dIdt</span> = beta * forrige_I * forrige_S - gamma * forrige_I
+    <span class="org-variable-name">dRdt</span> = gamma * forrige_I
+
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Oppdaterer verdiene ved &#229; ta med derivert ganger delta_t</span>
+    <span class="org-variable-name">ny_S</span> = forrige_S + dSdt * delta_t
+    <span class="org-variable-name">ny_I</span> = forrige_I + dIdt * delta_t
+    <span class="org-variable-name">ny_R</span> = forrige_R + dRdt * delta_t
+
+    <span class="org-comment-delimiter"># </span><span class="org-comment">Legger inn de nye verdiene</span>
+    S.append(ny_S)
+    I.append(ny_I)
+    R.append(ny_R)
+
+    ts.append(t)
+
+plt.plot(ts, S, label=<span class="org-string">"Mottakelig"</span>)
+plt.plot(ts, I, label=<span class="org-string">"Infisert"</span>)
+plt.plot(ts, R, label=<span class="org-string">"Frisk"</span>)
+plt.legend()
+</pre>
+</div>
+
+
+<div id="org9a89c7c" class="figure">
+<p><img src="figurer/sir-modell.png" alt="sir-modell.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

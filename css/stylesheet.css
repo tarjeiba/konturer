@@ -26,7 +26,6 @@ pre  {
 
 pre .org-variable-name {
     font-weight: 600;
-
 }
 
 pre .org-keyword {
@@ -52,7 +51,7 @@ body {
 
 }
 
-.figure {
+figure, .figure {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -70,13 +69,14 @@ h1 {
     margin-bottom: 0.9em;
 }
 
-h2::before {
+/* .outline-2 for ikke å få med table-of-contents-diven */
+.outline-2 h2::before {
     counter-increment: subsection;
     content: counter(subsection) ": ";
 	     
 }
 
-h2 {
+.outline-2 h2 {
     counter-reset: task;
     font-size: 1.5em;
     line-height: 1em;
