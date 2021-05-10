@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	let prog = cmEditor.getValue();
 	output.textContent = "";
 	Sk.pre = "${name}-output";
-	Sk.configure({output: (text) => output.textContent = text,
+	Sk.configure({output: (text) => output.textContent += text,
 		      read: builtinRead}); 
 	(Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = canvasId;
 	Sk.TurtleGraphics.height = 600; Sk.TurtleGraphics.width = 800;
